@@ -17,7 +17,47 @@ import (
 
 var DB *gorm.DB
 
-// --- MODELLERİMİZ ---
+// ==========================================
+// 🔥 EKSİK OLAN TEMEL MODELLER EKLENDİ 🔥
+// ==========================================
+type User struct {
+	ID           uint   `gorm:"primaryKey" json:"id"`
+	Username     string `json:"username"`
+	PasswordHash string `json:"password_hash"`
+}
+
+type Image struct {
+	ID         uint   `gorm:"primaryKey" json:"id"`
+	PropertyID uint   `json:"property_id"`
+	ImagePath  string `json:"image_path"`
+	IsMain     bool   `json:"is_main"`
+}
+
+type Property struct {
+	ID          uint      `gorm:"primaryKey" json:"id"`
+	Title       string    `json:"title"`
+	Description string    `json:"description"`
+	Price       float64   `json:"price"`
+	Type        string    `json:"type"`
+	Rooms       string    `json:"rooms"`
+	Location    string    `json:"location"`
+	Badge       string    `json:"badge"`
+	Images      []Image   `gorm:"foreignKey:PropertyID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"images"`
+	CreatedAt   time.Time `json:"created_at"`
+}
+
+type Message struct {
+	ID        uint      `gorm:"primaryKey" json:"id"`
+	Name      string    `json:"name"`
+	Phone     string    `json:"phone"`
+	Email     string    `json:"email"`
+	Content   string    `json:"content"`
+	CreatedAt time.Time `json:"created_at"`
+}
+
+// ==========================================
+// DİĞER MODELLER
+// ==========================================
 type InfoCard struct {
 	ID          uint   `gorm:"primaryKey" json:"id"`
 	Icon        string `json:"icon"`
@@ -33,7 +73,6 @@ type TeamMember struct {
 	ImagePath   string `json:"image_path"`
 }
 
-// YENİ: Emlak Rehberi (Blog) Modeli
 type BlogPost struct {
 	ID        uint      `gorm:"primaryKey" json:"id"`
 	Title     string    `json:"title"`
@@ -45,7 +84,7 @@ type BlogPost struct {
 
 // --- VERİTABANI BAĞLANTISI ---
 func connectDatabase() {
-	// DİKKAT: Şifreni yazmayı unutma!
+	// DİKKAT: Şifren ve DB adın doğru olmalı. DB önceden phpMyAdmin'de açılmış olmalı!
 	dsn := "root:123456@tcp(127.0.0.1:3306)/asilemlak_db?charset=utf8mb4&parseTime=True&loc=Local"
 	database, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
@@ -54,8 +93,9 @@ func connectDatabase() {
 	}
 
 	DB = database
+	// Artık modeller eksiksiz, AutoMigrate sorunsuz çalışacak!
 	DB.AutoMigrate(&User{}, &Property{}, &Image{}, &Message{}, &InfoCard{}, &TeamMember{}, &BlogPost{})
-	fmt.Println("Veritabanı bağlantısı başarıyla kuruldu!")
+	fmt.Println("Veritabanı bağlantısı başarıyla kuruldu ve tablolar oluşturuldu!")
 }
 
 // Profesyonel ve Güvenli Admin Oluşturma
@@ -63,10 +103,7 @@ func initAdmin() {
 	var count int64
 	DB.Model(&User{}).Count(&count)
 	if count == 0 {
-		// 1. Şifreyi koddan değil, sunucunun gizli ayarlarından (ENV) çek
 		adminPass := os.Getenv("ASIL_ADMIN_PASSWORD")
-
-		// 2. Eğer sunucuda ayarlanmamışsa, çok zor ve karmaşık bir geçici şifre ata
 		if adminPass == "" {
 			adminPass = "Asil12345"
 		}
@@ -105,7 +142,8 @@ func initBlogs() {
 	}
 }
 
-// Giriş İşlemi (Değişmedi)
+// --- CONTROLLER FONKSİYONLARI ---
+
 func login(c *gin.Context) {
 	var input struct {
 		Username string `json:"username"`
@@ -126,8 +164,6 @@ func login(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{"mesaj": "Giriş Başarılı", "token": "asil_emlak_onayli_giris_123"})
 }
-
-// --- CRUD İşlemleri (İlanlar İçin Kritik Güncellemeler) ---
 
 func getProperties(c *gin.Context) {
 	var properties []Property
@@ -151,14 +187,13 @@ func createProperty(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"hata": err.Error()})
 		return
 	}
-	// GORM, images listesini algılayıp otomatik oluşturur
+	newProperty.CreatedAt = time.Now()
 	DB.Create(&newProperty)
 	c.JSON(http.StatusCreated, newProperty)
 }
 
 func deleteProperty(c *gin.Context) {
 	id := c.Param("id")
-	// CASCADE sayesinde sadece Property'yi silmek resim tablosunu da temizler
 	if err := DB.Delete(&Property{}, id).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"hata": "İlan silinemedi"})
 		return
@@ -166,12 +201,10 @@ func deleteProperty(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"mesaj": "İlan silindi"})
 }
 
-// 🔥 CRITICAL GÜNCELLEME: ÇOKLU RESİM DESTEKLİ GÜNCELLEME 🔥
 func updateProperty(c *gin.Context) {
 	id := c.Param("id")
 	var property Property
 
-	// Önce eski veriyi ve resimleri veritabanından çekelim
 	if err := DB.Preload("Images").First(&property, id).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"hata": "İlan bulunamadı"})
 		return
@@ -183,9 +216,7 @@ func updateProperty(c *gin.Context) {
 		return
 	}
 
-	// Transaction kullanarak işlemin bütünlüğünü garantiye alalım
 	err := DB.Transaction(func(tx *gorm.DB) error {
-		// 1. Temel alanları (Title, Price, vs.) güncelle
 		if err := tx.Model(&property).Updates(Property{
 			Title:       input.Title,
 			Description: input.Description,
@@ -198,20 +229,15 @@ func updateProperty(c *gin.Context) {
 			return err
 		}
 
-		// 2. Resim İlişkilerini Güncelle (Association Replace)
-		// Frontend bize tam ve yeni resim listesini gönderiyor.
-		// Bu komut, eski ilişkileri (veritabanından) siler ve yeni listeyi (input.Images) ekler.
 		if len(input.Images) > 0 {
 			if err := tx.Model(&property).Association("Images").Replace(input.Images); err != nil {
 				return err
 			}
 		} else {
-			// Eğer yeni resim gönderilmediyse eski resimleri sil (veya koru mantığına göre değişebilir, biz siliyoruz)
 			if err := tx.Model(&property).Association("Images").Clear(); err != nil {
 				return err
 			}
 		}
-
 		return nil
 	})
 
@@ -220,12 +246,10 @@ func updateProperty(c *gin.Context) {
 		return
 	}
 
-	// En güncel halini tekrar çekip gönderelim
 	DB.Preload("Images").First(&property, id)
 	c.JSON(http.StatusOK, property)
 }
 
-// Diğer CRUD (Mesaj, Kart, Ekip) işlemleri (Değişmedi)
 func uploadImage(c *gin.Context) {
 	file, err := c.FormFile("image")
 	if err != nil {
@@ -248,6 +272,7 @@ func createMessage(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"hata": "Geçersiz veri"})
 		return
 	}
+	newMessage.CreatedAt = time.Now()
 	DB.Create(&newMessage)
 	c.JSON(http.StatusCreated, gin.H{"mesaj": "Alındı"})
 }
@@ -286,7 +311,41 @@ func getTeamMembers(c *gin.Context) {
 	c.JSON(http.StatusOK, members)
 }
 
-// --- BLOG İŞLEMLERİ ---
+func createTeamMember(c *gin.Context) {
+	var newMember TeamMember
+	if err := c.ShouldBindJSON(&newMember); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"hata": "Geçersiz veri"})
+		return
+	}
+	DB.Create(&newMember)
+	c.JSON(http.StatusCreated, newMember)
+}
+
+func updateTeamMember(c *gin.Context) {
+	id := c.Param("id")
+	var member TeamMember
+	if err := DB.First(&member, id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"hata": "Bulunamadı"})
+		return
+	}
+	var input TeamMember
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"hata": "Geçersiz veri"})
+		return
+	}
+	DB.Model(&member).Updates(input)
+	c.JSON(http.StatusOK, member)
+}
+
+func deleteTeamMember(c *gin.Context) {
+	id := c.Param("id")
+	if err := DB.Delete(&TeamMember{}, id).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"hata": "Silinemedi"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"mesaj": "Silindi"})
+}
+
 func getBlogs(c *gin.Context) {
 	var blogs []BlogPost
 	DB.Order("created_at desc").Find(&blogs)
@@ -323,49 +382,22 @@ func deleteBlog(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"mesaj": "Silindi"})
 }
 
-func createTeamMember(c *gin.Context) {
-	var newMember TeamMember
-	if err := c.ShouldBindJSON(&newMember); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"hata": "Geçersiz veri"})
-		return
-	}
-	DB.Create(&newMember)
-	c.JSON(http.StatusCreated, newMember)
-}
-
-func deleteTeamMember(c *gin.Context) {
-	id := c.Param("id")
-	if err := DB.Delete(&TeamMember{}, id).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"hata": "Silinemedi"})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{"mesaj": "Silindi"})
-}
-
-func updateTeamMember(c *gin.Context) {
-	id := c.Param("id")
-	var member TeamMember
-	if err := DB.First(&member, id).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"hata": "Bulunamadı"})
-		return
-	}
-	var input TeamMember
-	if err := c.ShouldBindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"hata": "Geçersiz veri"})
-		return
-	}
-	DB.Model(&member).Updates(input)
-	c.JSON(http.StatusOK, member)
-}
-
+// ==========================================
+// ANA FONKSİYON (MOTORU ÇALIŞTIRMA)
+// ==========================================
 func main() {
+	// 1. Veritabanına Bağlan ve Tabloları Oluştur
 	connectDatabase()
+
+	// 2. Varsayılan Verileri Doldur (Kontağı Çevir!)
 	initAdmin()
 	initInfoCards()
+	initBlogs() // 🔥 EKSİK OLAN BUYDU, EKLENDİ! 🔥
 
+	// 3. Router ve CORS Ayarları
 	router := gin.Default()
 	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:3000", "http://localhost:5173"},
+		AllowOrigins:     []string{"http://localhost:3000", "http://localhost:5173", "*"}, // Mobilden girmek için * eklendi
 		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization"},
 		AllowCredentials: true,
@@ -374,29 +406,36 @@ func main() {
 
 	router.Static("/uploads", "./uploads")
 
+	// 4. API Rotaları
 	api := router.Group("/api")
 	{
 		api.POST("/login", login)
+
 		api.GET("/properties", getProperties)
 		api.GET("/properties/:id", getProperty)
 		api.POST("/properties", createProperty)
 		api.DELETE("/properties/:id", deleteProperty)
-		api.PUT("/properties/:id", updateProperty) // Güncelleme rotası aktif
+		api.PUT("/properties/:id", updateProperty)
+
 		api.POST("/upload", uploadImage)
+
 		api.POST("/messages", createMessage)
 		api.GET("/messages", getMessages)
+
 		api.GET("/info-cards", getInfoCards)
 		api.PUT("/info-cards/:id", updateInfoCard)
+
 		api.GET("/team", getTeamMembers)
 		api.POST("/team", createTeamMember)
 		api.PUT("/team/:id", updateTeamMember)
 		api.DELETE("/team/:id", deleteTeamMember)
+
 		api.GET("/blogs", getBlogs)
 		api.GET("/blogs/:id", getBlog)
 		api.POST("/blogs", createBlog)
 		api.DELETE("/blogs/:id", deleteBlog)
 	}
 
-	fmt.Println("Sunucu http://localhost:8080 adresinde çalışıyor...")
+	fmt.Println("🚀 Sunucu http://localhost:8080 adresinde çalışıyor...")
 	router.Run(":8080")
 }
