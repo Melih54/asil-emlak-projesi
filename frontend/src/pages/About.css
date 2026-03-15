@@ -1,0 +1,117 @@
+.about-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.about-header-glass {
+  text-align: center;
+  margin-bottom: 50px;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  padding: 50px 30px;
+  border-radius: 15px;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.about-header-glass h1 {
+  margin: 0 0 20px 0;
+  font-size: 42px;
+  font-weight: 800;
+  text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
+}
+
+.about-header-glass p {
+  font-size: 18px;
+  color: #e0e0e0;
+  line-height: 1.8;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* EKİBİMİZ BÖLÜMÜ */
+.team-section {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 50px;
+  border-radius: 15px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+  border-top: 6px solid #d32f2f;
+}
+
+.team-section h2 {
+  text-align: center;
+  color: #000;
+  font-size: 32px;
+  margin-top: 0;
+  margin-bottom: 40px;
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 30px;
+}
+
+.team-card {
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  border: 1px solid #f0f0f0;
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.team-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 35px rgba(211, 47, 47, 0.2);
+  border-color: #d32f2f;
+}
+
+.team-image-container {
+  width: 100%;
+  height: 250px;
+  overflow: hidden;
+  background: #f4f4f4;
+}
+
+.team-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s;
+}
+
+.team-card:hover .team-image-container img {
+  transform: scale(1.1); /* Resim üzerine gelince hafifçe yakınlaşır */
+}
+
+.team-info {
+  padding: 20px;
+}
+
+.team-info h3 {
+  margin: 0 0 5px 0;
+  color: #000;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.team-role {
+  color: #d32f2f;
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.team-desc {
+  color: #666;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+}

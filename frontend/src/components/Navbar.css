@@ -1,0 +1,212 @@
+/* TÜM SİTENİN ARKAPLAN FOTOĞRAFI */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.85)), url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+/* YENİ CAM EFEKTLİ (GLASSMORPHISM) MENÜ */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 50px;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(12px);
+  border-bottom: 2px solid rgba(211, 47, 47, 0.8);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  transition: background-color 0.3s;
+}
+
+/* LOGO TASARIMI */
+.navbar-logo {
+  max-width: 150px;
+  height: auto;
+}
+
+.logo-image-main {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.5));
+}
+
+/* MENÜ LİNKLERİ */
+.navbar-links {
+  list-style: none;
+  display: flex;
+  gap: 15px;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
+
+/* MODERN NAVİGASYON BUTONLARI */
+.navbar-links li a {
+  text-decoration: none;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 10px 20px;
+  border-radius: 30px;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.navbar-links li a:hover {
+  background-color: rgba(211, 47, 47, 0.9);
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(211, 47, 47, 0.5);
+  transform: translateY(-2px);
+}
+
+/* =========================================
+   AÇILIR MENÜ (DROPDOWN) TASARIMI
+   ========================================= */
+.nav-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: rgba(15, 15, 15, 0.95);
+  backdrop-filter: blur(10px);
+  min-width: 170px;
+  box-shadow: 0px 8px 25px rgba(0,0,0,0.5);
+  z-index: 100;
+  border-radius: 8px;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 5px 0;
+}
+
+.dropdown-content a {
+  color: white !important;
+  padding: 12px 20px !important;
+  text-decoration: none;
+  display: block;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.dropdown-content a:last-child { border-bottom: none; }
+
+.dropdown-content a:hover {
+  background-color: rgba(211, 47, 47, 0.8) !important;
+  padding-left: 25px !important;
+}
+
+.nav-dropdown:hover .dropdown-content {
+  display: block;
+  animation: fadeInDown 0.3s ease-out;
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translate(-50%, -10px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* MOBİL HAMBURGER BUTONU (Masaüstünde Gizli) */
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+body.dark-mode .mobile-menu-btn { color: white; }
+
+/* =========================================
+   📱 MOBİL UYUM (RESPONSIVE DESIGN)
+   ========================================= */
+@media screen and (max-width: 768px) {
+  /* 1. Navbar'ı logoyu ortalayacak şekilde ayarla */
+  .navbar { 
+    padding: 10px 20px; 
+    position: relative; 
+    justify-content: center; /* Her şeyi ortaya çeker */
+  }
+  
+  /* 2. Logoyu tam ortaya sabitle */
+  .navbar-logo { 
+    max-width: 160px; 
+    margin: 0 auto; 
+    display: flex; 
+    justify-content: center; 
+  } 
+
+  /* 3. Menü butonunu zorla sağ köşeye as! */
+  .mobile-menu-btn { 
+    display: block; 
+    position: absolute; 
+    right: 20px; 
+    top: 50%; 
+    transform: translateY(-50%); 
+  }
+
+  /* Dropdown'un mobildeki davranışı */
+  .dropdown-content {
+    position: static;
+    display: none;
+    background-color: transparent;
+    box-shadow: none;
+    transform: none;
+    border: none;
+    min-width: 100%;
+    padding-left: 15px;
+  }
+  .nav-dropdown:hover .dropdown-content {
+    display: block;
+    animation: none;
+  }
+
+  /* Mobil Açılır Menü Listesi */
+  .navbar-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: rgba(15, 15, 15, 0.98);
+    flex-direction: column;
+    padding: 20px 0;
+    gap: 0;
+    clip-path: polygon(0 0, 100% 0, 100% 0, 0 0); 
+    transition: all 0.4s ease-in-out;
+  }
+
+  .navbar-links.mobile-open {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); 
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+  }
+
+  .navbar-links li { width: 100%; text-align: center; }
+  
+  .navbar-links li a { 
+    display: block; 
+    padding: 15px; 
+    font-size: 18px; 
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    border-radius: 0; /* Mobilde hap tasarımı yerine şerit tasarımı daha şık durur */
+  }
+  
+  .navbar-links li:last-child { 
+    justify-content: center; 
+    padding-top: 15px; 
+    margin: 0; 
+  }
+}

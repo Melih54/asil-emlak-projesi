@@ -1,0 +1,175 @@
+.properties-page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 0;
+}
+
+/* Üst Başlık Alanı (Koyu Cam Efekti) */
+.properties-header {
+  text-align: center;
+  margin-bottom: 40px;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  padding: 40px 30px;
+  border-radius: 15px;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.properties-header h1 {
+  margin: 0 0 15px 0;
+  font-size: 40px;
+  font-weight: 800;
+  text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
+}
+
+.properties-header p {
+  font-size: 18px;
+  color: #e0e0e0;
+  text-shadow: 1px 1px 5px rgba(0,0,0,0.8);
+}
+
+/* GELİŞMİŞ FİLTRE ÇUBUĞU (Anasayfa gibi Koyu Cam) */
+.advanced-filter-bar {
+  background: rgba(15, 15, 15, 0.75);
+  backdrop-filter: blur(15px);
+  padding: 20px 30px;
+  border-radius: 50px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+  margin-bottom: 50px;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  flex-wrap: wrap;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* INPUT VE COMBOBOX ORTAK TASARIMI */
+.adv-filter-input {
+  flex: 1;
+  min-width: 150px;
+  padding: 16px 25px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 30px;
+  font-size: 16px;
+  outline: none;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  font-weight: 500;
+  font-family: inherit;
+}
+
+.adv-filter-input::placeholder {
+  color: #bbbbbb;
+}
+
+/* COMBOBOX (SELECT) ÖZEL DÜZELTMELER (Anasayfa Oku) */
+select.adv-filter-input {
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 20px center;
+  background-size: 16px;
+  padding-right: 45px;
+}
+
+select.adv-filter-input option {
+  background-color: #1a1a1a;
+  color: #ffffff;
+}
+
+.adv-filter-input:focus {
+  border-color: #d32f2f;
+  background-color: rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 15px rgba(211, 47, 47, 0.5);
+  transform: translateY(-2px);
+}
+
+.price-inputs {
+  display: flex;
+  gap: 15px;
+  flex: 2;
+  min-width: 250px;
+}
+
+/* 🔥 İŞTE BURASI: FİYAT INPUTLARINDAKİ ÇİRKİN AŞAĞI/YUKARI OKLARI GİZLEME KODU 🔥 */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield; /* Firefox için okları gizler */
+}
+
+/* İLANLARIN LİSTELENDİĞİ IZGARA */
+.all-properties-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+/* KART TASARIMI (Anasayfadaki Beyaz Lüks Kartlar) */
+.prop-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  transition: all 0.4s ease;
+  cursor: pointer;
+  border: 1px solid #f0f0f0;
+}
+
+.prop-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 35px rgba(211, 47, 47, 0.3);
+  border-color: #d32f2f;
+}
+
+.prop-img-container {
+  width: 100%;
+  height: 220px;
+  position: relative;
+}
+
+.prop-img-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.prop-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: linear-gradient(45deg, #000000, #333333);
+  color: white;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 12px;
+  letter-spacing: 1px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.prop-content { padding: 20px; }
+.prop-price { font-size: 24px; font-weight: 900; color: #d32f2f; margin: 0 0 10px 0; }
+.prop-title { font-size: 19px; font-weight: 800; color: #1a1a1a; margin: 0 0 15px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.prop-features { display: flex; justify-content: space-between; color: #666; font-size: 15px; border-top: 1px solid #eee; padding-top: 15px; }
+
+/* Filtre Bulunamadı Yazısı */
+.no-results {
+  text-align: center;
+  color: #e0e0e0;
+  font-size: 20px;
+  padding: 50px 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}

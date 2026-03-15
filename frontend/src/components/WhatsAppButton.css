@@ -1,0 +1,88 @@
+/* Tüm butonları sağ alt köşede alt alta dizen taşıyıcı kutu */
+.floating-links-container {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  z-index: 1000;
+  align-items: flex-end; /* Butonların genişlerken sola doğru (içeri) uzamasını sağlar */
+}
+
+/* Genişleyen Kapsül Butonların Ortak Özelliği */
+.float-btn {
+  height: 60px;
+  width: 60px; /* Başlangıçta sadece tam yuvarlak */
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  overflow: hidden; /* Dışarı taşan yazıları gizler */
+  color: white;
+}
+
+/* Üzerine gelince buton uzar (Kapsül olur) */
+.float-btn:hover {
+  width: 220px; /* Genişleyen boyut */
+  box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* Butonun içindeki Logo / İkon kısmı (Hep 60x60 kalır) */
+.btn-icon {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 24px;
+  font-family: Arial, Helvetica, sans-serif;
+  flex-shrink: 0; /* Küçülmesini engeller */
+}
+
+/* Butonun içindeki Gizli Yazı kısmı */
+.btn-text {
+  font-size: 15px;
+  font-weight: bold;
+  opacity: 0;
+  white-space: nowrap;
+  transition: opacity 0.3s ease;
+  padding-right: 20px;
+}
+
+/* Üzerine gelince gizli yazı görünür olur */
+.float-btn:hover .btn-text {
+  opacity: 1;
+  transition-delay: 0.1s; /* Uzama biterken yazı belirir */
+}
+
+/* --- MARKALARA ÖZEL RENKLER --- */
+
+/* Hepsiemlak (Kırmızı - Beyaz) */
+.hepsiemlak-btn { background-color: #e30a17; }
+.hepsiemlak-btn .btn-icon { font-size: 22px; font-weight: bold; letter-spacing: -1px; }
+
+/* Sahibinden (Sarı - Siyah) */
+.sahibinden-btn { background-color: #ffe800; color: #111; }
+.sahibinden-btn .btn-icon { font-size: 28px; }
+
+/* WhatsApp (Yeşil - Beyaz) */
+.whatsapp-btn { background-color: #25d366; }
+
+/* Telefon Ekranları İçin Uyum */
+@media screen and (max-width: 768px) {
+  .floating-links-container {
+    bottom: 20px;
+    right: 20px;
+    gap: 12px;
+  }
+  .float-btn { height: 50px; width: 50px; }
+  .float-btn:hover { width: 190px; }
+  .btn-icon { width: 50px; height: 50px; font-size: 20px; }
+  .btn-text { font-size: 14px; }
+  /* WhatsApp ikonunu mobilde biraz küçültelim */
+  .whatsapp-btn svg { width: 28px; height: 28px; }
+}

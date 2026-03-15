@@ -1,0 +1,11 @@
+# Node.js (React Çöpleri)
+node_modules/
+dist/
+.env
+
+# Go (Backend Çöpleri)
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib

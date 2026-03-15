@@ -1,0 +1,83 @@
+.footer {
+  background-color: #000000; /* Siyah arkaplan */
+  color: #ffffff;
+  padding-top: 40px;
+  margin-top: 50px;
+  border-top: 4px solid #d32f2f; /* Kırmızı üst çizgi */
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap; /* Ekran küçülürse alt alta geçsinler */
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 50px;
+  gap: 30px;
+}
+
+.footer-section {
+  flex: 1;
+  min-width: 250px;
+}
+
+.footer-logo {
+  height: 80px;
+  margin-bottom: 15px;
+  object-fit: contain;
+}
+
+.footer-section h3 {
+  color: #d32f2f; /* Kırmızı başlıklar */
+  font-size: 20px;
+  margin-bottom: 20px;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+/* Başlıkların altına ince beyaz bir çizgi */
+.footer-section h3::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 50px;
+  height: 2px;
+  background-color: #ffffff;
+}
+
+.footer-section p {
+  line-height: 1.6;
+  color: #cccccc;
+  margin-bottom: 10px;
+}
+
+.footer-section.links ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-section.links li {
+  margin-bottom: 10px;
+}
+
+.footer-section.links a {
+  color: #cccccc;
+  text-decoration: none;
+  transition: color 0.3s ease, padding-left 0.3s ease;
+}
+
+.footer-section.links a:hover {
+  color: #d32f2f;
+  padding-left: 5px; /* Üzerine gelince hafif sağa kayma efekti */
+}
+
+.footer-bottom {
+  text-align: center;
+  padding: 20px;
+  margin-top: 40px;
+  background-color: #111111; /* Biraz daha koyu siyah */
+  color: #888888;
+  font-size: 14px;
+}

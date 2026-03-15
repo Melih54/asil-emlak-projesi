@@ -1,0 +1,92 @@
+.admin-container {
+  max-width: 900px;
+  margin: 40px auto;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+}
+
+.login-container {
+  max-width: 450px;
+  margin: 100px auto;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 50px 40px;
+  border-radius: 15px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+  border-top: 6px solid #d32f2f;
+}
+
+.login-container h2 { text-align: center; color: #000; margin-bottom: 30px; font-size: 28px; font-weight: 800;}
+
+.logout-btn {
+  background: linear-gradient(45deg, #d32f2f, #ff5252);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: bold;
+  float: right;
+  margin-top: -60px;
+  transition: all 0.3s;
+}
+
+.logout-btn:hover { background: linear-gradient(45deg, #000, #333); transform: translateY(-2px); }
+
+/* Sekmeler (Tab Menüsü) */
+.admin-tabs { display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; flex-wrap: wrap;}
+
+.tab-btn {
+  background: #f0f0f0;
+  color: #333;
+  border: none;
+  padding: 12px 25px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.tab-btn.active { background: linear-gradient(45deg, #d32f2f, #ff5252); color: #fff; box-shadow: 0 4px 15px rgba(211,47,47,0.4); }
+.tab-btn:hover:not(.active) { background: #e0e0e0; transform: translateY(-2px); }
+
+/* Formlar ve Girdiler */
+.admin-form { display: flex; flex-direction: column; gap: 20px; }
+.form-group label { font-weight: bold; color: #111; margin-bottom: 8px; display: block;}
+.form-group input, .form-group textarea, .form-group select {
+  width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; font-family: inherit; background: #f9f9f9; box-sizing: border-box; transition: all 0.3s;
+}
+.form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: #d32f2f; background: #fff; outline: none; box-shadow: 0 0 10px rgba(211,47,47,0.1);}
+.form-group textarea { min-height: 120px; resize: vertical; }
+
+.submit-btn {
+  background: linear-gradient(45deg, #000, #333); color: white; border: none; padding: 15px; font-size: 16px; font-weight: bold; border-radius: 30px; cursor: pointer; transition: all 0.3s; margin-top: 10px;
+}
+.submit-btn:hover { background: linear-gradient(45deg, #d32f2f, #ff5252); transform: translateY(-3px); box-shadow: 0 6px 20px rgba(211,47,47,0.4); }
+
+/* Listeler (İlan ve Mesaj) */
+.messages-list, .admin-property-list { display: flex; flex-direction: column; gap: 15px; }
+
+.message-card, .admin-prop-item {
+  background: #ffffff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-left: 5px solid #d32f2f; border-right: 1px solid #eee; border-top: 1px solid #eee; border-bottom: 1px solid #eee; transition: transform 0.3s;
+}
+.message-card:hover, .admin-prop-item:hover { transform: translateX(5px); }
+
+.message-header, .admin-prop-item { display: flex; justify-content: space-between; align-items: center; }
+.message-header { border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px; }
+.message-header h3, .admin-prop-info h4 { margin: 0; color: #000; font-size: 18px; font-weight: 800;}
+.message-date { color: #888; font-size: 14px; }
+.message-contact-info { color: #d32f2f; font-size: 14px; margin-bottom: 15px; font-weight: bold; }
+.message-body { color: #444; line-height: 1.6; white-space: pre-wrap; background: #f9f9f9; padding: 15px; border-radius: 8px; }
+
+.admin-prop-info p { margin: 5px 0 0 0; color: #666; font-size: 14px; }
+.admin-prop-actions { display: flex; gap: 10px; }
+.action-btn { border: none; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-weight: bold; color: white; transition: all 0.3s;}
+.edit-btn { background: #333; }
+.edit-btn:hover { background: #000; transform: translateY(-2px);}
+.delete-btn { background: #d32f2f; }
+.delete-btn:hover { background: #b71c1c; transform: translateY(-2px);}

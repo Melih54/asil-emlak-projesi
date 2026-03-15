@@ -1,0 +1,89 @@
+/* Ekranın en altında sabit duran koyu cam efektli çubuk */
+.cookie-banner-container {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 800px;
+  background: rgba(15, 15, 15, 0.85); /* Koyu cam */
+  backdrop-filter: blur(15px);
+  padding: 20px 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  z-index: 9999; /* Her şeyin üstünde görünsün */
+  animation: slideUp 0.5s ease-out; /* Aşağıdan yukarı kayarak gelme animasyonu */
+}
+
+.cookie-text {
+  color: #e0e0e0;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.cookie-text strong {
+  color: #ffffff;
+  font-size: 16px;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.cookie-text a {
+  color: #d32f2f;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.cookie-text a:hover {
+  text-decoration: underline;
+}
+
+.cookie-accept-btn {
+  background: linear-gradient(45deg, #d32f2f, #ff5252);
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 30px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.3s;
+  box-shadow: 0 4px 15px rgba(211, 47, 47, 0.4);
+}
+
+.cookie-accept-btn:hover {
+  background: linear-gradient(45deg, #b71c1c, #d32f2f);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(211, 47, 47, 0.6);
+}
+
+/* Aşağıdan yukarı kayma animasyonu */
+@keyframes slideUp {
+  from {
+    bottom: -100px;
+    opacity: 0;
+  }
+  to {
+    bottom: 20px;
+    opacity: 1;
+  }
+}
+
+/* Mobil ekranlar için alt alta dizilim */
+@media screen and (max-width: 600px) {
+  .cookie-banner-container {
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+  }
+  .cookie-accept-btn {
+    width: 100%;
+  }
+}
