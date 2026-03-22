@@ -17,6 +17,7 @@ import About from './pages/About';
 import Favorites from './pages/Favorites';
 import Blog from './pages/Blog';
 import BlogDetail from './pages/BlogDetail';
+import Info from './pages/info';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           <Route path="/favoriler" element={<Favorites />} />
           <Route path="/rehber" element={<Blog />} />
           <Route path="/rehber/:id" element={<BlogDetail />} />
+          <Route path="/portal" element={<Info />} />
         </Routes>
       </div>
 

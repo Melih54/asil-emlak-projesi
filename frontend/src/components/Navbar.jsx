@@ -50,7 +50,12 @@ function Navbar() {
 
       {/* 🔥 DİKKAT: className kısmını güncelledik ve tıklandığında menü kapansın diye onClick ekledik 🔥 */}
       <ul className={`navbar-links ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
-        <li onClick={() => setIsMobileMenuOpen(false)}><Link to="/">Anasayfa</Link></li>
+        <li className="nav-dropdown">
+          <Link to="/" onClick={() => setIsMobileMenuOpen(false)}>Anasayfa ▾</Link>
+          <div className="dropdown-content">
+            <Link to="/portal" onClick={() => setIsMobileMenuOpen(false)}>Portal</Link>
+          </div>
+        </li>
         <li onClick={() => setIsMobileMenuOpen(false)}><Link to="/hakkimizda">Hakkımızda</Link></li>
 
         <li className="nav-dropdown">
